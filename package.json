@@ -1,0 +1,28 @@
+{
+  "name": "bedrock-ledger-consensus-continuity-storage",
+  "version": "0.0.1-0",
+  "description": "Storage plugin for Continuity consensus.",
+  "main": "lib",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/digitalbazaar/bedrock-ledger-consensus-continuity-storage.git"
+  },
+  "author": {
+    "name": "Digital Bazaar, Inc.",
+    "email": "support@digitalbazaar.com",
+    "url": "http://digitalbazaar.com"
+  },
+  "bugs": {
+    "url": "https://github.com/digitalbazaar/bedrock-ledger-consensus-continuity-storage/issues"
+  },
+  "homepage": "https://github.com/digitalbazaar/bedrock-ledger-consensus-continuity-storage",
+  "dependencies": {
+  },
+  "peerDependencies": {
+    "bedrock": "^1.12.0",
+    "bedrock-ledger-node": "digitalbazaar/bedrock-ledger-node#master"
+  },
+  "engines": {
+    "node": ">=8"
+  }
+}

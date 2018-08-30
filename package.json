@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/digitalbazaar/bedrock-ledger-consensus-continuity-storage",
   "dependencies": {
+    "lodash": "^4.17.10"
   },
   "peerDependencies": {
     "bedrock": "^1.12.0",

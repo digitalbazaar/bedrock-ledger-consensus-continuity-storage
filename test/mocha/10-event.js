@@ -149,7 +149,7 @@ describe('foo', () => {
       should.not.exist(creator);
       generation.should.equal(2);
     });
-    it('is properly indexed', async () => {
+    it('is properly indexed for creatorId parameter', async () => {
       const getHead = _getMethod('getHead');
       const [creatorId] = testCreatorIds;
       const r = await getHead({creatorId, explain: true});
@@ -159,6 +159,18 @@ describe('foo', () => {
       s.nReturned.should.equal(1);
       s.totalKeysExamined.should.equal(1);
       s.totalDocsExamined.should.equal(0);
+    });
+    it('is properly indexed for generation === 0', async () => {
+      const getHead = _getMethod('getHead');
+      const r = await getHead({generation: 0, explain: true});
+      const {indexName} = r.queryPlanner.winningPlan.inputStage.inputStage
+        .inputStage.inputStage;
+      indexName.should.equal('event.continuity2017.type.1');
+      const {executionStats: s} = r;
+      s.nReturned.should.equal(1);
+      s.totalKeysExamined.should.equal(2);
+      // this happens exactly once to cache the genesis merge event
+      s.totalDocsExamined.should.equal(1);
     });
   }); // end getHeads
 });

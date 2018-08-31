@@ -14,7 +14,7 @@ const peers = [];
 let ledgerNode;
 const blockMethods = ['getConsensusProofPeers'];
 const eventMethods = ['aggregateHistory', 'hasOutstandingRegularEvents',
-  'getHead', '_stat'];
+  'getHead', 'getStartHash', '_stat'];
 const testEventHashes = [];
 const testCreatorIds = [];
 
@@ -201,6 +201,29 @@ describe('Continuity Storage', () => {
         // $graphLookup
       });
     }); // end aggregateHistory
+
+    describe('getStartHash', () => {
+      it('produces a result', async () => {
+        const {getStartHash} = _getEventMethods();
+        const [creatorId] = testCreatorIds;
+        const targetGeneration = 1;
+        const r = await getStartHash({creatorId, targetGeneration});
+        r.should.be.a.string;
+      });
+      it('is properly indexed', async () => {
+        const {getStartHash} = _getEventMethods();
+        const [creatorId] = testCreatorIds;
+        const targetGeneration = 1;
+        const r = await getStartHash(
+          {creatorId, explain: true, targetGeneration});
+        const {executionStats: s} = r;
+        const {indexName} = r.queryPlanner.winningPlan.inputStage.inputStage;
+        indexName.should.equal('event.continuity2017.type.1');
+        s.nReturned.should.equal(1);
+        s.totalKeysExamined.should.equal(1);
+        s.totalDocsExamined.should.equal(0);
+      });
+    }); // end hasOutstandingRegularEvents
 
     describe('hasOutstandingRegularEvents', () => {
       it('produces a result', async () => {

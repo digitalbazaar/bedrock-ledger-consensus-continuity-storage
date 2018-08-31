@@ -14,8 +14,8 @@ const peers = [];
 let ledgerNode;
 const blockMethods = ['getConsensusProofPeers'];
 const eventMethods = ['aggregateHistory', 'hasOutstandingRegularEvents',
-  'getHead', 'getMergeEventHashes', 'getMergeEventPeers', 'getStartHash',
-  '_stat'
+  'getAvgConsensusTime', 'getHead', 'getMergeEventHashes',
+  'getMergeEventPeers', 'getStartHash', '_stat'
 ];
 const testEventHashes = [];
 const testCreatorIds = [];
@@ -136,6 +136,27 @@ describe('Continuity Storage', () => {
         pluginMethods.should.have.same.members(eventMethods);
       });
     }); // end check plugin
+
+    describe('getAvgConsensusTime', () => {
+      it('produces a result', async () => {
+        const {getAvgConsensusTime} = _getEventMethods();
+        // the only creatorId in the network
+        const [creatorId] = testCreatorIds;
+        const r = await getAvgConsensusTime({creatorId});
+        r.should.be.an('object');
+        should.exist(r.avgConsensusTime);
+        r.avgConsensusTime.should.be.a('number');
+      });
+      it('is indexed properly', async () => {
+        const {getAvgConsensusTime} = _getEventMethods();
+        // the only creatorId in the network
+        const [creatorId] = testCreatorIds;
+        const r = await getAvgConsensusTime({creatorId, explain: true});
+        const {indexName} = r.stages[0].$cursor.queryPlanner.winningPlan
+          .inputStage;
+        indexName.should.equal('event.continuity2017.type.1');
+      });
+    });
 
     describe('getHead', () => {
       it('returns the proper head', async () => {

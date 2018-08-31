@@ -13,7 +13,8 @@ const mockData = require('./mock.data');
 const peers = [];
 let ledgerNode;
 const blockMethods = ['getConsensusProofPeers'];
-const eventMethods = ['aggregateHistory', 'getHead', '_stat'];
+const eventMethods = ['aggregateHistory', 'hasOutstandingRegularEvents',
+  'getHead', '_stat'];
 const testEventHashes = [];
 const testCreatorIds = [];
 
@@ -199,7 +200,25 @@ describe('Continuity Storage', () => {
         // TOOD: make assertions about report, however details are scant for
         // $graphLookup
       });
-    });
+    }); // end aggregateHistory
+
+    describe('hasOutstandingRegularEvents', () => {
+      it('produces a result', async () => {
+        const {hasOutstandingRegularEvents} = _getEventMethods();
+        const r = await hasOutstandingRegularEvents();
+        r.should.be.false;
+      });
+      it('is properly indexed', async () => {
+        const {hasOutstandingRegularEvents} = _getEventMethods();
+        const r = await hasOutstandingRegularEvents({explain: true});
+        const {executionStats: s} = r;
+        const {indexName} = r.queryPlanner.winningPlan.inputStage.inputStage;
+        indexName.should.equal('event.consensus.continuity2017.1');
+        s.nReturned.should.equal(0);
+        s.totalKeysExamined.should.equal(1);
+        s.totalDocsExamined.should.equal(0);
+      });
+    }); // end hasOutstandingRegularEvents
   }); // end event APIs
 
   describe('Block APIs', () => {

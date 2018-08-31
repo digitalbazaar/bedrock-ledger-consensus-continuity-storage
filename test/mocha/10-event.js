@@ -12,11 +12,11 @@ const mockData = require('./mock.data');
 
 const peers = [];
 let ledgerNode;
-const eventMethods = ['getHead'];
-const testEventHash = [];
+const eventMethods = ['aggregateHistory', 'getHead', '_stat'];
+const testEventHashes = [];
 const testCreatorIds = [];
 
-describe('foo', () => {
+describe('Continuity Storage', () => {
   before(done => {
     helpers.prepareDatabase(mockData, done);
   });
@@ -65,8 +65,8 @@ describe('foo', () => {
             eventBlock.block.event.should.be.an('array');
             // a regular event and a merge event
             eventBlock.block.event.should.have.length(2);
-            // push a valid eventHash to testEventHash, this is a merge event
-            testEventHash.push(eventBlock.block.event[0].treeHash);
+            // push a valid eventHash to testEventHashes, this is a merge event
+            testEventHashes.push(eventBlock.block.event[0].treeHash);
             // this is a different merge event
             testCreatorIds.push(eventBlock.block.event[1].proof.creator);
             callback(null, eventBlock.meta.blockHash);
@@ -173,6 +173,31 @@ describe('foo', () => {
       s.totalDocsExamined.should.equal(1);
     });
   }); // end getHeads
+  describe('aggregateHistory', () => {
+    it('produces a result', async () => {
+      const getHead = _getMethod('getHead');
+      const [creatorId] = testCreatorIds;
+      const head = await getHead({creatorId});
+      const [{meta: {eventHash: startHash}}] = head;
+      const aggregateHistory = _getMethod('aggregateHistory');
+      const creatorRestriction = [{creator: creatorId, generation: 0}];
+      const r = await aggregateHistory({creatorRestriction, startHash});
+      r.should.have.length(4);
+    });
+    it('is properly indexed', async () => {
+      const getHead = _getMethod('getHead');
+      const [creatorId] = testCreatorIds;
+      const head = await getHead({creatorId});
+      const [{meta: {eventHash: startHash}}] = head;
+      const aggregateHistory = _getMethod('aggregateHistory');
+      const creatorRestriction = [{creator: creatorId, generation: 0}];
+      const r = await aggregateHistory(
+        {creatorRestriction, explain: true, startHash});
+      should.exist(r);
+      // TOOD: make assertions about report, however details are scant for
+      // $graphLookup
+    });
+  });
 });
 
 function _getMethod(name) {

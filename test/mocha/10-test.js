@@ -306,9 +306,9 @@ describe('Continuity Storage', () => {
         const r = await hasOutstandingRegularEvents({explain: true});
         const {executionStats: s} = r;
         const {indexName} = r.queryPlanner.winningPlan.inputStage.inputStage;
-        indexName.should.equal('event.consensus.continuity2017.1');
+        indexName.should.equal('event.continuity2017.outstandingRegularEvent');
         s.nReturned.should.equal(0);
-        s.totalKeysExamined.should.equal(1);
+        s.totalKeysExamined.should.equal(0);
         s.totalDocsExamined.should.equal(0);
       });
     }); // end hasOutstandingRegularEvents

@@ -241,7 +241,7 @@ describe('Continuity Storage', () => {
         const r = await getMergeEventHashes({blockHeight, explain: true});
         const {executionStats: s} = r;
         const {indexName} = r.queryPlanner.winningPlan.inputStage;
-        indexName.should.equal('event.blockHeight.continuity2017.1');
+        indexName.should.equal('event.blockHeight.mergeEvent');
         s.nReturned.should.equal(1);
         s.totalKeysExamined.should.equal(1);
         s.totalDocsExamined.should.equal(0);
@@ -265,7 +265,7 @@ describe('Continuity Storage', () => {
         const r = await getMergeEventPeers({blockHeight, explain: true});
         const {executionStats: s} = r;
         const {indexName} = r.queryPlanner.winningPlan.inputStage;
-        indexName.should.equal('event.blockHeight.continuity2017.1');
+        indexName.should.equal('event.blockHeight.mergeEvent');
         s.nReturned.should.equal(1);
         s.totalKeysExamined.should.equal(1);
         s.totalDocsExamined.should.equal(0);

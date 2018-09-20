@@ -71,7 +71,12 @@ api.settleNetwork = ({consensusApi, nodes, series = false}, callback) => {
   async.doWhilst(callback => {
     async.auto({
       workCycle: callback => api.runWorkerCycle(
-        {consensusApi, nodes, series}, callback),
+        {consensusApi, nodes, series}, err => {
+          if(err && err.name !== 'LedgerConfigurationChangeError') {
+            return callback(err);
+          }
+          callback();
+        }),
       operationEvents: ['workCycle', (results, callback) => {
         async.map(nodes, (ledgerNode, callback) => {
           ledgerNode.storage.events.getCount({

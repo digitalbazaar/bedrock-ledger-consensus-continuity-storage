@@ -9,7 +9,8 @@ config.mocha.tests.push(path.join(__dirname, 'mocha'));
 config.jsonld.strictSSL = false;
 
 // MongoDB
-config.mongodb.name = 'bedrock_ledger_continuity_storage_test';
+// using abbreviation to avoid index sizes exceeding 127 bytes
+config.mongodb.name = 'bedrock_ledger_c_c_storage_test';
 config.mongodb.dropCollections.onInit = true;
 config.mongodb.dropCollections.collections = [];
 

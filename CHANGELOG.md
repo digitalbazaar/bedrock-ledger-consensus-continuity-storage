@@ -1,5 +1,10 @@
 # bedrock-ledger-consensus-continuity-storage ChangeLog
 
+## 1.0.2 - 2018-09-20
+
+### Changed
+- Use bedrock-validation 3.x in the test suite.
+
 ## 1.0.1 - 2018-09-20
 
 ### Changed

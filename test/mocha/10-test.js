@@ -205,9 +205,11 @@ describe('Continuity Storage', () => {
         const [creatorId] = testCreatorIds;
         const head = await getHead({creatorId});
         const [{meta: {eventHash: startHash}}] = head;
+        const startParentHash = [startHash];
         const {aggregateHistory} = _getEventMethods();
         const creatorRestriction = [{creator: creatorId, generation: 0}];
-        const r = await aggregateHistory({creatorRestriction, startHash});
+        const r = await aggregateHistory(
+          {creatorRestriction, startHash, startParentHash});
         r.should.have.length(4);
       });
       it('is properly indexed', async () => {
@@ -215,10 +217,11 @@ describe('Continuity Storage', () => {
         const [creatorId] = testCreatorIds;
         const head = await getHead({creatorId});
         const [{meta: {eventHash: startHash}}] = head;
+        const startParentHash = [startHash];
         const {aggregateHistory} = _getEventMethods();
         const creatorRestriction = [{creator: creatorId, generation: 0}];
         const r = await aggregateHistory(
-          {creatorRestriction, explain: true, startHash});
+          {creatorRestriction, explain: true, startHash, startParentHash});
         should.exist(r);
         // TOOD: make assertions about report, however details are scant for
         // $graphLookup

@@ -1,6 +1,6 @@
 {
   "name": "bedrock-ledger-consensus-continuity-storage",
-  "version": "1.0.3-0",
+  "version": "2.0.0",
   "description": "Storage plugin for Continuity consensus.",
   "main": "lib",
   "repository": {

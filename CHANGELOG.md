@@ -1,5 +1,15 @@
 # bedrock-ledger-consensus-continuity-storage ChangeLog
 
+## 2.1.0 - TBD
+
+### Fixed
+- Ensure that the starting points for the `aggregateHistory` query are merge
+  events.
+
+### Changed
+- Compute starting point for `aggregateHistory` query.
+- Remove unused `startHash` parameter.
+
 ## 2.0.0 - 2018-10-09
 
 ### Changed

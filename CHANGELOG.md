@@ -1,6 +1,6 @@
 # bedrock-ledger-consensus-continuity-storage ChangeLog
 
-## 2.1.0 - TBD
+## 2.1.0 - 2018-12-12
 
 ### Fixed
 - Ensure that the starting points for the `aggregateHistory` query are merge

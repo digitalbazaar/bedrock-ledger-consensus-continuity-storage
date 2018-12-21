@@ -319,10 +319,11 @@ describe('Continuity Storage', () => {
     describe('setEffectiveConfiguration', () => {
       it('produces a result', async () => {
         const {setEffectiveConfiguration} = _getEventMethods();
-        const r = await setEffectiveConfiguration({blockHeight: 0, sequence: 0});
-        should.exist(r.hasValidConfigurationEvent);
-        r.hasValidConfigurationEvent.should.be.a('boolean');
-        r.hasValidConfigurationEvent.should.be.false;
+        const r = await setEffectiveConfiguration(
+          {blockHeight: 0, sequence: 0});
+        should.exist(r.hasEffectiveConfigurationEvent);
+        r.hasEffectiveConfigurationEvent.should.be.a('boolean');
+        r.hasEffectiveConfigurationEvent.should.be.false;
       });
     });
   }); // end event APIs

@@ -15,7 +15,7 @@ let ledgerNode;
 const blockMethods = ['getConsensusProofPeers'];
 const eventMethods = ['aggregateHistory', 'hasOutstandingRegularEvents',
   'getAvgConsensusTime', 'getHead', 'getMergeEventHashes',
-  'getMergeEventPeers', 'getStartHash', 'setValidConfiguration', '_stat'
+  'getMergeEventPeers', 'getStartHash', 'setEffectiveConfiguration', '_stat'
 ];
 const testEventHashes = [];
 const testCreatorIds = [];
@@ -316,10 +316,10 @@ describe('Continuity Storage', () => {
       });
     }); // end hasOutstandingRegularEvents
 
-    describe('setValidConfiguration', () => {
+    describe('setEffectiveConfiguration', () => {
       it('produces a result', async () => {
-        const {setValidConfiguration} = _getEventMethods();
-        const r = await setValidConfiguration({blockHeight: 0, sequence: 0});
+        const {setEffectiveConfiguration} = _getEventMethods();
+        const r = await setEffectiveConfiguration({blockHeight: 0, sequence: 0});
         should.exist(r.hasValidConfigurationEvent);
         r.hasValidConfigurationEvent.should.be.a('boolean');
         r.hasValidConfigurationEvent.should.be.false;

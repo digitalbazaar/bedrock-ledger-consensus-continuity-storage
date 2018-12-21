@@ -18,7 +18,7 @@
     "bedrock-ledger-agent": "^2.0.0",
     "bedrock-ledger-consensus-continuity": "^2.0.0",
     "bedrock-ledger-consensus-storage": "file:..",
-    "bedrock-ledger-context": "^6.0.0",
+    "bedrock-ledger-context": "^7.0.0",
     "bedrock-ledger-node": "^4.0.0",
     "bedrock-ledger-storage-mongodb": "^1.0.0",
     "bedrock-mongodb": "^5.0.0",

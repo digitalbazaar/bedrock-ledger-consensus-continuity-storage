@@ -5,6 +5,7 @@
 
 const bedrock = require('bedrock');
 require('bedrock-ledger-consensus-continuity');
+require('bedrock-ledger-consensus-continuity-es-most-recent-participants');
 require('bedrock-ledger-storage-mongodb');
 
 require('bedrock-test');

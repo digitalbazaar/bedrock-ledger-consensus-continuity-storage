@@ -16,16 +16,18 @@ api.addOperation = ({count = 1, ledgerNode, opTemplate}, callback) => {
   const operations = {};
   async.timesSeries(count, (i, callback) => {
     const operation = bedrock.util.clone(opTemplate);
+    // this creator is a required part of the operation
+    operation.creator = ledgerNode._peerId;
     operation.record.id = `https://example.com/event/${uuid()}`;
-    operation.record.creator = ledgerNode.id;
-    ledgerNode.consensus.operations.add(
-      {operation, ledgerNode}, (err, result) => {
-        if(err) {
-          return callback(err);
-        }
-        operations[result.meta.operationHash] = operation;
-        callback();
-      });
+    // this creator is just an arbitrary field in the record
+    operation.record.creator = uuid();
+    ledgerNode.operations.add({operation}, (err, result) => {
+      if(err) {
+        return callback(err);
+      }
+      operations[result.meta.operationHash] = operation;
+      callback();
+    });
   }, err => callback(err, operations));
 };
 

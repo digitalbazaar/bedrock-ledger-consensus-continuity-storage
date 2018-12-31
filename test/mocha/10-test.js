@@ -50,6 +50,15 @@ describe('Continuity Storage', () => {
       done();
     });
   });
+
+  before(async () => {
+    for(const ledgerNode of peers) {
+      const ledgerNodeId = ledgerNode.id;
+      const result = await consensusApi._voters.get({ledgerNodeId});
+      ledgerNode._peerId = result.id;
+    }
+  });
+
   before(function(done) {
     this.timeout(30000);
     const opTemplate = mockData.operations.alpha;
@@ -91,9 +100,6 @@ describe('Continuity Storage', () => {
     this.timeout(210000);
     const ledgerConfiguration = bedrock.util.clone(
       mockData.ledgerConfiguration);
-    // FIXME: remove
-    ledgerConfiguration.ledger =
-      'urn:uuid:ca539f07-7013-490a-b730-cd81c5745edb';
     ledgerConfiguration.operationValidator = [{
       type: 'SignatureValidator2017',
       validatorFilter: [{
@@ -103,6 +109,8 @@ describe('Continuity Storage', () => {
       approvedSigner: ['urn:uuid:99bfc16e-fc92-4e65-8ecf-343f413766cc'],
       minimumSignaturesRequired: 1
     }];
+    ledgerConfiguration.creator = genesisLedgerNode._peerId;
+    ledgerConfiguration.sequence = 1;
     async.auto({
       changeConfig: callback => genesisLedgerNode.config.change(
         {ledgerConfiguration}, callback),
@@ -244,7 +252,7 @@ describe('Continuity Storage', () => {
         const r = await getMergeEventHashes({blockHeight, explain: true});
         const {executionStats: s} = r;
         const {indexName} = r.queryPlanner.winningPlan.inputStage;
-        indexName.should.equal('event.blockHeight.mergeEvent');
+        indexName.should.equal('event.continuity2017.blockHeight.mergeEvent');
         s.nReturned.should.equal(1);
         s.totalKeysExamined.should.equal(1);
         s.totalDocsExamined.should.equal(0);
@@ -268,7 +276,7 @@ describe('Continuity Storage', () => {
         const r = await getMergeEventPeers({blockHeight, explain: true});
         const {executionStats: s} = r;
         const {indexName} = r.queryPlanner.winningPlan.inputStage;
-        indexName.should.equal('event.blockHeight.mergeEvent');
+        indexName.should.equal('event.continuity2017.blockHeight.mergeEvent');
         s.nReturned.should.equal(1);
         s.totalKeysExamined.should.equal(1);
         s.totalDocsExamined.should.equal(0);
@@ -317,13 +325,24 @@ describe('Continuity Storage', () => {
     }); // end hasOutstandingRegularEvents
 
     describe('setEffectiveConfiguration', () => {
+      it('is properly indexed', async () => {
+        const {setEffectiveConfiguration} = _getEventMethods();
+        const r = await setEffectiveConfiguration(
+          {blockHeight: 0, explain: true, sequence: 0});
+        const {executionStats: s} = r;
+        const {indexName} = r.queryPlanner.winningPlan.inputStage.inputStage;
+        indexName.should.equal('event.continuity2017.effectiveConfiguration');
+        s.nReturned.should.equal(1);
+        s.totalKeysExamined.should.equal(1);
+        s.totalDocsExamined.should.equal(1);
+      });
       it('produces a result', async () => {
         const {setEffectiveConfiguration} = _getEventMethods();
         const r = await setEffectiveConfiguration(
           {blockHeight: 0, sequence: 0});
         should.exist(r.hasEffectiveConfigurationEvent);
         r.hasEffectiveConfigurationEvent.should.be.a('boolean');
-        r.hasEffectiveConfigurationEvent.should.be.false;
+        r.hasEffectiveConfigurationEvent.should.be.true;
       });
     });
   }); // end event APIs

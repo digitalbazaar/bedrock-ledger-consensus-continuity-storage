@@ -1,5 +1,10 @@
 # bedrock-ledger-consensus-continuity-storage ChangeLog
 
+## 2.2.0 - 2018-12-31
+
+### Added
+- Implement `setEffectiveConfiguration` API.
+
 ## 2.1.0 - 2018-12-12
 
 ### Fixed

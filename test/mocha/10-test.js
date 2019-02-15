@@ -81,7 +81,8 @@ describe('Continuity Storage', () => {
             // push a valid eventHash to testEventHashes, this is a merge event
             testEventHashes.push(eventBlock.block.event[0].treeHash);
             // this is a different merge event
-            testCreatorIds.push(eventBlock.block.event[1].proof.creator);
+            testCreatorIds.push(eventBlock.block.event[1].proof
+              .verificationMethod);
             callback(null, eventBlock.meta.blockHash);
           }), callback)],
       testHash: ['getLatest', (results, callback) => {

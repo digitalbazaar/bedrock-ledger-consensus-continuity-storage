@@ -1,5 +1,10 @@
 # bedrock-ledger-consensus-continuity-storage ChangeLog
 
+## 2.3.0 - TBD
+
+### Changed
+- Add additional fields to `aggregateHistory` index to address slow queries.
+
 ## 2.2.0 - 2018-12-31
 
 ### Added

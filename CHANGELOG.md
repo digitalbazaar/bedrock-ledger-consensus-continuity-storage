@@ -1,5 +1,10 @@
 # bedrock-ledger-consensus-continuity-storage ChangeLog
 
+## 2.4.0 - 2019-03-25
+
+### Changes
+- Use bedrock-ledger-node@8.
+
 ## 2.3.0 - 2019-02-15
 
 ### Changed

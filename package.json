@@ -2,6 +2,7 @@
   "name": "bedrock-ledger-consensus-continuity-storage",
   "version": "2.4.1-0",
   "description": "Storage plugin for Continuity consensus.",
+  "license": "SEE LICENSE IN LICENSE.md",
   "main": "lib",
   "scripts": {
     "lint": "eslint lib test/mocha"
@@ -23,14 +24,14 @@
     "lodash": "^4.17.10"
   },
   "peerDependencies": {
-    "bedrock": "^1.12.0",
-    "bedrock-ledger-node": "^8.0.0"
+    "bedrock": "1.18.1 - 3.x",
+    "bedrock-ledger-node": "8.x - 9.x"
   },
   "engines": {
     "node": ">=8"
   },
   "devDependencies": {
-    "eslint": "^5.13.0",
+    "eslint": "^6.0.0",
     "eslint-config-digitalbazaar": "^2.0.0"
   }
 }

@@ -1,5 +1,10 @@
 # bedrock-ledger-consensus-continuity-storage ChangeLog
 
+## 2.4.2 - 2019-12-17
+
+### Changed
+- Update peer dependencies.
+
 ## 2.4.1 - 2019-11-13
 
 ### Changed

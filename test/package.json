@@ -37,6 +37,6 @@
     "grunt": "^1.0.1",
     "jsonld-signatures": "^2.1.2",
     "lodash": "^4.17.4",
-    "uuid": "^8.3.0"
+    "uuid": "^3.1.0"
   }
 }

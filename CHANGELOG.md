@@ -1,5 +1,11 @@
 # bedrock-ledger-consensus-continuity-storage ChangeLog
 
+## 3.0.0 -
+
+### Changed
+- **BREAKING**: Use `bedrock-mongodb` 7.0.0.
+- Use collection.collectionName over collection.s.name.
+
 ## 2.5.0 - 2020-10-06
 
 ### Changed

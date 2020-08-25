@@ -33,8 +33,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: |
-        # install at the root to install workerpool module
-        apt-get install redis-tools
+        sudo apt-get install redis-tools
         cd test
         npm install
     - name: Run test with Node.js ${{ matrix.node-version }}

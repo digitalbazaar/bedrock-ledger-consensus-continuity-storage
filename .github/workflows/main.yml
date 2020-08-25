@@ -83,6 +83,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: |
+        sudo apt-get install redis-tools
         cd test
         npm install
     - name: Generate coverage report

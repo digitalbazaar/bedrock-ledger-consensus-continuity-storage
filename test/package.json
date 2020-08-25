@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "test": "redis-cli flushall && node --preserve-symlinks test test",
+    "debug": "redis-cli flushall && node --preserve-symlinks test test --log-level debug",
     "watch": "grunt watch"
   },
   "dependencies": {
@@ -12,7 +13,6 @@
     "bedrock-docs": "^3.0.0",
     "bedrock-express": "^3.2.0",
     "bedrock-https-agent": "^1.1.0",
-    "bedrock-identity": "^8.0.0",
     "bedrock-injector": "^1.0.0",
     "bedrock-jobs": "^3.0.0",
     "bedrock-jsonld-document-loader": "^1.0.1",
@@ -35,7 +35,7 @@
     "bedrock-validation": "^4.0.0",
     "bedrock-views": "^7.1.0",
     "grunt": "^1.0.1",
-    "jsonld-signatures": "^2.1.2",
+    "jsonld-signatures": "^4.5.0",
     "lodash": "^4.17.4",
     "uuid": "^3.1.0"
   }

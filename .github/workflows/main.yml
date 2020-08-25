@@ -34,6 +34,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: |
         # install at the root to install workerpool module
+        apt-get install redis-tools
+        cd test
         npm install
     - name: Run test with Node.js ${{ matrix.node-version }}
       run: |
@@ -64,7 +66,7 @@ jobs:
         ports:
           - 27017:27017
       redis:
-        image: redis
+        image: redis:6
         options: >-
           --health-cmd "redis-cli ping"
           --health-interval 10s

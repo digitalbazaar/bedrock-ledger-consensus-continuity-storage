@@ -6,7 +6,7 @@
     "test": "redis-cli flushall && node --preserve-symlinks test test",
     "debug": "redis-cli flushall && node --preserve-symlinks test test --log-level debug",
     "coverage": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text-summary npm test",
-    "coverage-ci": "cross-env NODE_ENV=test nyc --reporter=lcov npm test",
+    "coverage-ci": "cross-env NODE_ENV=test nyc --reporter=lcovonly npm test",
     "coverage-report": "nyc report",
     "watch": "grunt watch"
   },

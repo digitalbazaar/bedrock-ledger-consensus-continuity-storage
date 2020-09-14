@@ -199,13 +199,18 @@ describe('Continuity Storage', () => {
         const {getHead} = _getEventMethods();
         const r = await getHead({generation: 0, explain: true});
         const {indexName} = r.queryPlanner.winningPlan.inputStage.inputStage
-          .inputStage.inputStage;
+          .inputStage;
         indexName.should.equal('event.continuity2017.type.1');
         const {executionStats: s} = r;
         s.nReturned.should.equal(1);
         s.totalKeysExamined.should.equal(2);
         // this happens exactly once to cache the genesis merge event
-        s.totalDocsExamined.should.equal(1);
+        // note: When an index covers a query, the explain result has an IXSCAN
+        // stage that is not a descendant of a FETCH stage, and in the
+        // executionStats, the totalDocsExamined is 0.
+        // eslint-disable-next-line max-len
+        // @see https://docs.mongodb.com/manual/reference/explain-results/#covered-queries
+        s.totalDocsExamined.should.equal(0);
       });
     }); // end getHeads
     describe('aggregateHistory', () => {

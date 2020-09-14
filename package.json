@@ -31,7 +31,7 @@
     "node": ">=8"
   },
   "devDependencies": {
-    "eslint": "^6.0.0",
-    "eslint-config-digitalbazaar": "^2.0.0"
+    "eslint": "^7.9.0",
+    "eslint-config-digitalbazaar": "^2.6.1"
   }
 }

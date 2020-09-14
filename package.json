@@ -28,7 +28,7 @@
     "bedrock-ledger-node": "^11.0.0"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "devDependencies": {
     "eslint": "^7.9.0",

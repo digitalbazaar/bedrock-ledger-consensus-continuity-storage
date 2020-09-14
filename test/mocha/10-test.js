@@ -375,7 +375,7 @@ describe('Continuity Storage', () => {
         const r = await getConsensusProofPeers({blockHeight: 1, explain: true});
         const {indexName} = r.stages[0].$cursor.queryPlanner
           .winningPlan.inputStage;
-        indexName.should.equal('block.continuity2017.blockHeight.1');
+        indexName.should.equal('block.blockHeight.core.1');
       });
     });
   }); // end block APIs

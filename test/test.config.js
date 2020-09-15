@@ -25,3 +25,6 @@ config['ledger-consensus-continuity'].gossip.cache.enabled = false;
 
 // reduce debounce in the event-writer
 config['ledger-consensus-continuity'].writer.debounce = 50;
+
+// set this to false to ignore SSL errors in tests.
+config['https-agent'].rejectUnauthorized = false;

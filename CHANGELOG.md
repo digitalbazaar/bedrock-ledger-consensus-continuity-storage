@@ -1,5 +1,10 @@
 # bedrock-ledger-consensus-continuity-storage ChangeLog
 
+## 2.5.0 - 2020-10-06
+
+### Changed
+- Return covered field consensus in events getHead API.
+
 ## 2.4.2 - 2019-12-17
 
 ### Changed

@@ -11,7 +11,6 @@
     "watch": "grunt watch"
   },
   "dependencies": {
-    "async": "^2.4.1",
     "bedrock": "^3.1.1",
     "bedrock-docs": "^3.0.0",
     "bedrock-express": "^3.2.0",
@@ -20,11 +19,11 @@
     "bedrock-jobs": "^3.0.0",
     "bedrock-jsonld-document-loader": "^1.0.1",
     "bedrock-ledger-agent": "github:digitalbazaar/bedrock-ledger-agent#upgrade-bedrock-mongodb-7",
-    "bedrock-ledger-consensus-continuity": "github:digitalbazaar/bedrock-ledger-consensus-continuity#mongo-version-3",
+    "bedrock-ledger-consensus-continuity": "github:digitalbazaar/bedrock-ledger-consensus-continuity#rebased-mongo-3",
     "bedrock-ledger-consensus-continuity-es-most-recent-participants": "^2.0.0",
     "bedrock-ledger-consensus-continuity-storage": "file:..",
     "bedrock-ledger-context": "^15.0.0",
-    "bedrock-ledger-node": "github:digitalbazaar/bedrock-ledger-node#mongo-version-3",
+    "bedrock-ledger-node": "github:digitalbazaar/bedrock-ledger-node#rebased-mongo-3",
     "bedrock-ledger-storage-mongodb": "github:digitalbazaar/bedrock-ledger-storage-mongodb#mongo-version-3",
     "bedrock-mongodb": "^8.0.1",
     "bedrock-passport": "^6.0.0",
@@ -39,7 +38,6 @@
     "cross-env": "^7.0.2",
     "grunt": "^1.0.1",
     "jsonld-signatures": "^5.1.0",
-    "lodash": "^4.17.4",
     "nyc": "^15.1.0",
     "uuid": "^3.1.0"
   }

@@ -1,10 +1,8 @@
 /*!
- * Copyright (c) 2017-2019 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2017-2020 Digital Bazaar, Inc. All rights reserved.
  */
 'use strict';
 
-// const _ = require('lodash');
-const async = require('async');
 const bedrock = require('bedrock');
 const brLedgerNode = require('bedrock-ledger-node');
 const helpers = require('./helpers');
@@ -13,7 +11,8 @@ const mockData = require('./mock.data');
 const peers = [];
 let ledgerNode;
 const blockMethods = ['getConsensusProofPeers'];
-const eventMethods = ['aggregateHistory', 'hasOutstandingRegularEvents',
+const eventMethods = [
+  'aggregateHistory', 'hasOutstandingRegularEvents',
   'getAvgConsensusTime', 'getHead', 'getMergeEventHashes',
   'getMergeEventPeers', 'getStartHash', 'setEffectiveConfiguration', '_stat'
 ];
@@ -21,34 +20,17 @@ const testEventHashes = [];
 const testCreatorIds = [];
 
 describe('Continuity Storage', () => {
-  before(done => {
-    helpers.prepareDatabase(mockData, done);
-  });
   // get consensus plugin and create genesis ledger node
-  let consensusApi;
   let genesisLedgerNode;
-  const {ledgerConfiguration} = mockData;
-  before(done => {
-    async.auto({
-      clean: callback =>
-        helpers.removeCollections(['ledger', 'ledgerNode'], callback),
-      consensusPlugin: callback => helpers.use('Continuity2017', callback),
-      ledgerNode: ['clean', 'consensusPlugin', (results, callback) => {
-        brLedgerNode.add(null, {ledgerConfiguration}, (err, ledgerNode) => {
-          if(err) {
-            return callback(err);
-          }
-          callback(null, ledgerNode);
-        });
-      }]
-    }, (err, results) => {
-      assertNoError(err);
-      genesisLedgerNode = results.ledgerNode;
-      consensusApi = results.consensusPlugin.api;
-      peers.push(genesisLedgerNode);
-      ledgerNode = genesisLedgerNode;
-      done();
-    });
+  let consensusApi;
+
+  before(async () => {
+    await helpers.prepareDatabase(mockData);
+    const {ledgerConfiguration} = mockData;
+    ({api: consensusApi} = await helpers.use('Continuity2017'));
+    ledgerNode = genesisLedgerNode = await brLedgerNode.add(
+      null, {ledgerConfiguration});
+    peers.push(genesisLedgerNode);
   });
 
   before(async () => {
@@ -59,45 +41,33 @@ describe('Continuity Storage', () => {
     }
   });
 
-  before(function(done) {
+  before(async function() {
     this.timeout(30000);
     const opTemplate = mockData.operations.alpha;
-    async.auto({
-      addOperation: callback => helpers.addOperation(
-        {ledgerNode: genesisLedgerNode, opTemplate}, callback),
-      settleNetwork: ['addOperation', (results, callback) =>
-        helpers.settleNetwork(
-          {consensusApi, nodes: peers, series: false}, callback)],
-      getLatest: ['settleNetwork', (results, callback) =>
-        async.map(peers, (ledgerNode, callback) =>
-          ledgerNode.storage.blocks.getLatest((err, result) => {
-            assertNoError(err);
-            const eventBlock = result.eventBlock;
-            should.exist(eventBlock.block);
-            eventBlock.block.blockHeight.should.equal(1);
-            eventBlock.block.event.should.be.an('array');
-            // a regular event and a merge event
-            eventBlock.block.event.should.have.length(2);
-            // push a valid eventHash to testEventHashes, this is a merge event
-            testEventHashes.push(eventBlock.block.event[0].treeHash);
-            // this is a different merge event
-            testCreatorIds.push(eventBlock.block.event[1].proof
-              .verificationMethod);
-            callback(null, eventBlock.meta.blockHash);
-          }), callback)],
-      testHash: ['getLatest', (results, callback) => {
-        const blockHashes = results.getLatest;
-        // the blockHash on every node should be the same
-        blockHashes.every(h => h === blockHashes[0]).should.be.true;
-        callback();
-      }]
-    }, err => {
-      assertNoError(err);
-      done();
-    });
+    await helpers.addOperation({ledgerNode: genesisLedgerNode, opTemplate});
+    await helpers.settleNetwork(
+      {consensusApi, nodes: peers, series: false});
+    const blockHashes = [];
+    for(const ledgerNode of peers) {
+      const result = await ledgerNode.storage.blocks.getLatest();
+      const eventBlock = result.eventBlock;
+      should.exist(eventBlock.block);
+      eventBlock.block.blockHeight.should.equal(1);
+      eventBlock.block.event.should.be.an('array');
+      // a regular event and a merge event
+      eventBlock.block.event.should.have.length(2);
+      // push a valid eventHash to testEventHashes, this is a merge event
+      testEventHashes.push(eventBlock.block.event[0].treeHash);
+      // this is a different merge event
+      testCreatorIds.push(eventBlock.block.event[1].proof
+        .verificationMethod);
+      blockHashes.push(eventBlock.meta.blockHash);
+    }
+    // the blockHash on every node should be the same
+    blockHashes.every(h => h === blockHashes[0]).should.be.true;
   });
   // add a config event
-  before(function(done) {
+  before(async function() {
     this.timeout(210000);
     const ledgerConfiguration = bedrock.util.clone(
       mockData.ledgerConfiguration);
@@ -112,29 +82,13 @@ describe('Continuity Storage', () => {
     }];
     ledgerConfiguration.creator = genesisLedgerNode._peerId;
     ledgerConfiguration.sequence = 1;
-    async.auto({
-      changeConfig: callback => genesisLedgerNode.config.change(
-        {ledgerConfiguration}, callback),
-      settleNetwork: ['changeConfig', (results, callback) =>
-        helpers.settleNetwork(
-          {consensusApi, nodes: peers, series: false}, callback)],
-      test: ['settleNetwork', (results, callback) => {
-        async.map(peers, (ledgerNode, callback) =>
-          ledgerNode.config.get(callback),
-        (err, result) => {
-          if(err) {
-            return callback(err);
-          }
-          for(const c of result) {
-            c.should.eql(ledgerConfiguration);
-          }
-          callback();
-        });
-      }],
-    }, err => {
-      assertNoError(err);
-      done();
-    });
+    await genesisLedgerNode.config.change({ledgerConfiguration});
+    await helpers.settleNetwork(
+      {consensusApi, nodes: peers, series: false});
+    for(const ledgerNode of peers) {
+      const c = await ledgerNode.config.get();
+      c.should.eql(ledgerConfiguration);
+    }
   });
   describe('Event APIs', () => {
     describe('check plugin methods', () => {

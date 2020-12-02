@@ -1,6 +1,6 @@
 # bedrock-ledger-consensus-continuity-storage ChangeLog
 
-## 3.0.0 -
+## 3.0.0 - 2020-12-01
 
 ### Changed
 - **BREAKING**: Use `bedrock-mongodb` 8.1.x.

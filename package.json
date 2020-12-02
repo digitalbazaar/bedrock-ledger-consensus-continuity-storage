@@ -24,7 +24,7 @@
     "lodash": "^4.17.10"
   },
   "peerDependencies": {
-    "bedrock": "1.18.1 - 3.x",
+    "bedrock": "2.x - 3.x",
     "bedrock-ledger-node": "^11.0.0"
   },
   "engines": {

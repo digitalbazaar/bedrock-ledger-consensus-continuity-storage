@@ -3,7 +3,7 @@
 ## 3.0.0 -
 
 ### Changed
-- **BREAKING**: Use `bedrock-mongodb` 7.x-8.x.
+- **BREAKING**: Use `bedrock-mongodb` 8.1.x.
 - **BREAKING**: Use `bedrock-ledger-node` ^11.0.0.
 - Use `collection.collectionName` over `collection.s.name`.
 

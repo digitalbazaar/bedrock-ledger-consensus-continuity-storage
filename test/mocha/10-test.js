@@ -42,7 +42,7 @@ describe('Continuity Storage', () => {
   });
 
   before(async function() {
-    this.timeout(30000);
+    this.timeout(60000);
     const opTemplate = mockData.operations.alpha;
     await helpers.addOperation({ledgerNode: genesisLedgerNode, opTemplate});
     await helpers.settleNetwork(

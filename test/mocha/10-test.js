@@ -167,7 +167,9 @@ describe('Continuity Storage', () => {
         s.totalDocsExamined.should.equal(0);
       });
     }); // end getHeads
-    describe('aggregateHistory', () => {
+
+    // FIXME: skipped due to pending removal of this method
+    describe.skip('aggregateHistory', () => {
       it('produces a result', async () => {
         const {getHead} = _getEventMethods();
         const [creatorId] = testCreatorIds;
@@ -243,7 +245,8 @@ describe('Continuity Storage', () => {
       });
     }); // end getMergeEventPeers
 
-    describe('getStartHash', () => {
+    // FIXME: skipped due to pending removal of this method
+    describe.skip('getStartHash', () => {
       it('produces a result', async () => {
         const {getStartHash} = _getEventMethods();
         const [creatorId] = testCreatorIds;

@@ -36,7 +36,7 @@ describe('Continuity Storage', () => {
   before(async () => {
     for(const ledgerNode of peers) {
       const ledgerNodeId = ledgerNode.id;
-      const result = await consensusApi._voters.get({ledgerNodeId});
+      const result = await consensusApi._peers.get({ledgerNodeId});
       ledgerNode._peerId = result.id;
     }
   });
@@ -67,7 +67,8 @@ describe('Continuity Storage', () => {
     blockHashes.every(h => h === blockHashes[0]).should.be.true;
   });
   // add a config event
-  before(async function() {
+  // FIXME: adding a config event is not currently supported
+  /*before(async function() {
     this.timeout(210000);
     const ledgerConfiguration = bedrock.util.clone(
       mockData.ledgerConfiguration);
@@ -89,7 +90,7 @@ describe('Continuity Storage', () => {
       const c = await ledgerNode.config.get();
       c.should.eql(ledgerConfiguration);
     }
-  });
+  });*/
   describe('Event APIs', () => {
     describe('check plugin methods', () => {
       it('all the plugin methods are properly bound', () => {
@@ -124,6 +125,7 @@ describe('Continuity Storage', () => {
     describe('getHead', () => {
       it('returns the proper head', async () => {
         const {getHead} = _getEventMethods();
+        // FIXME: change to `peerId`
         const [creatorId] = testCreatorIds;
         const result = await getHead({creatorId});
         result.should.be.an('array');
@@ -135,8 +137,8 @@ describe('Continuity Storage', () => {
         eventHash.should.be.a('string');
         should.exist(record.meta.continuity2017);
         const {creator, generation} = record.meta.continuity2017;
-        should.not.exist(creator);
-        generation.should.equal(2);
+        creator.should.equal(creatorId);
+        generation.should.equal(1);
       });
       it('is properly indexed for creatorId parameter', async () => {
         const {getHead} = _getEventMethods();
@@ -279,8 +281,16 @@ describe('Continuity Storage', () => {
         const {hasOutstandingRegularEvents} = _getEventMethods();
         const r = await hasOutstandingRegularEvents({explain: true});
         const {executionStats: s} = r;
-        const {indexName} = r.queryPlanner.winningPlan.inputStage.inputStage;
-        indexName.should.equal('event.continuity2017.outstandingRegularEvent');
+        const projectionStage =
+          r.queryPlanner.winningPlan.inputStage.inputStage;
+        projectionStage.stage.should.equal('PROJECTION_DEFAULT');
+        const orStage = projectionStage.inputStage;
+        orStage.stage.should.equal('OR');
+        orStage.inputStages.length.should.equal(2);
+        for(const inputStage of orStage.inputStages) {
+          const {indexName} = inputStage;
+          indexName.should.equal('event.continuity2017.nonConsensusEvents');
+        }
         s.nReturned.should.equal(0);
         s.totalKeysExamined.should.equal(0);
         s.totalDocsExamined.should.equal(0);

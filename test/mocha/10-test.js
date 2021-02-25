@@ -3,7 +3,6 @@
  */
 'use strict';
 
-const bedrock = require('bedrock');
 const brLedgerNode = require('bedrock-ledger-node');
 const helpers = require('./helpers');
 const mockData = require('./mock.data');

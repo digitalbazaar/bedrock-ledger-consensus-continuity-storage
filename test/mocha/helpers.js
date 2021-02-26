@@ -28,7 +28,7 @@ api.addOperation = async ({count = 1, ledgerNode, opTemplate}) => {
 
 api.prepareDatabase = async function() {
   await api.removeCollections([
-    'ledger', 'ledgerNode', 'continuity2017_voter'
+    'ledger', 'ledgerNode', 'continuity2017_local_peer'
   ]);
 };
 

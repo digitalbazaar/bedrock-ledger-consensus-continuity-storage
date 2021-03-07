@@ -1,5 +1,5 @@
 /*!
- * Copyright (c) 2017-2020 Digital Bazaar, Inc. All rights reserved.
+ * Copyright (c) 2017-2021 Digital Bazaar, Inc. All rights reserved.
  */
 'use strict';
 
@@ -11,7 +11,8 @@ const peers = [];
 let ledgerNode;
 const blockMethods = ['getConsensusProofPeers'];
 const eventMethods = [
-  'aggregateHistory', 'hasOutstandingRegularEvents',
+  'aggregateHistory', 'hasOutstandingParentHashCommitments',
+  'hasOutstandingRegularEvents',
   'getAvgConsensusTime', 'getHead', 'getMergeEventHashes',
   'getMergeEventPeers', 'getStartHash', 'setEffectiveConfiguration', '_stat'
 ];

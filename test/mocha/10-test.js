@@ -117,7 +117,7 @@ describe('Continuity Storage', () => {
         const [creatorId] = testCreatorIds;
         const r = await getAvgConsensusTime({creatorId, explain: true});
         const {indexName} = r.stages[0].$cursor.queryPlanner.winningPlan
-          .inputStage.inputStage.inputStage;
+          .inputStage;
         indexName.should.equal('event.continuity2017.type.1');
       });
     });
@@ -154,7 +154,8 @@ describe('Continuity Storage', () => {
       it('is properly indexed for generation === 0', async () => {
         const {getHead} = _getEventMethods();
         const r = await getHead({generation: 0, explain: true});
-        const {indexName} = r.queryPlanner.winningPlan.inputStage.inputStage;
+        const {indexName} = r.queryPlanner.winningPlan.inputStage.inputStage
+          .inputStage;
         indexName.should.equal('event.continuity2017.type.1');
         const {executionStats: s} = r;
         s.nReturned.should.equal(1);
@@ -340,7 +341,7 @@ describe('Continuity Storage', () => {
         const {getConsensusProofPeers} = _getBlockMethods();
         const r = await getConsensusProofPeers({blockHeight: 1, explain: true});
         const {indexName} = r.stages[0].$cursor.queryPlanner
-          .winningPlan.inputStage.inputStage.inputStage;
+          .winningPlan.inputStage;
         indexName.should.equal('block.blockHeight.core.1');
       });
     });

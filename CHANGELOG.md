@@ -1,6 +1,6 @@
 # bedrock-ledger-consensus-continuity-storage ChangeLog
 
-## 4.0.0 - TBD
+## 4.0.0 - 2021-04-29
 
 ### Changed
 - **BREAKING**: Upgraded MongodDB indexes.

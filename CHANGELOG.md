@@ -1,5 +1,14 @@
 # bedrock-ledger-consensus-continuity-storage ChangeLog
 
+## 4.0.0 - TBD
+
+### Changed
+- **BREAKING**: Upgraded MongodDB indexes.
+
+### Added
+- Add `events.hasOutstandingParentHashCommitments` API.
+- Add `events.hasOutstandingRegularEvents` API.
+
 ## 3.0.0 - 2020-12-01
 
 ### Changed

@@ -104,18 +104,18 @@ describe('Continuity Storage', () => {
     describe('getAvgConsensusTime', () => {
       it('produces a result', async () => {
         const {getAvgConsensusTime} = _getEventMethods();
-        // the only creatorId in the network
-        const [creatorId] = testCreatorIds;
-        const r = await getAvgConsensusTime({creatorId});
+        // the only peerId in the network
+        const [peerId] = testCreatorIds;
+        const r = await getAvgConsensusTime({peerId});
         r.should.be.an('object');
         should.exist(r.avgConsensusTime);
         r.avgConsensusTime.should.be.a('number');
       });
       it('is indexed properly', async () => {
         const {getAvgConsensusTime} = _getEventMethods();
-        // the only creatorId in the network
-        const [creatorId] = testCreatorIds;
-        const r = await getAvgConsensusTime({creatorId, explain: true});
+        // the only peerId in the network
+        const [peerId] = testCreatorIds;
+        const r = await getAvgConsensusTime({peerId, explain: true});
         const {indexName} = r.stages[0].$cursor.queryPlanner.winningPlan
           .inputStage;
         indexName.should.equal('event.continuity2017.type.1');
@@ -126,8 +126,8 @@ describe('Continuity Storage', () => {
       it('returns the proper head', async () => {
         const {getHead} = _getEventMethods();
         // FIXME: change to `peerId`
-        const [creatorId] = testCreatorIds;
-        const result = await getHead({creatorId});
+        const [peerId] = testCreatorIds;
+        const result = await getHead({peerId});
         result.should.be.an('array');
         result.should.have.length(1);
         const record = result[0];
@@ -137,13 +137,13 @@ describe('Continuity Storage', () => {
         eventHash.should.be.a('string');
         should.exist(record.meta.continuity2017);
         const {creator, generation} = record.meta.continuity2017;
-        creator.should.equal(creatorId);
+        creator.should.equal(peerId);
         generation.should.equal(1);
       });
-      it('is properly indexed for creatorId parameter', async () => {
+      it('is properly indexed for peerId parameter', async () => {
         const {getHead} = _getEventMethods();
-        const [creatorId] = testCreatorIds;
-        const r = await getHead({creatorId, explain: true});
+        const [peerId] = testCreatorIds;
+        const r = await getHead({peerId, explain: true});
         const {indexName} = r.queryPlanner.winningPlan.inputStage.inputStage;
         indexName.should.equal('event.continuity2017.type.1');
         const {executionStats: s} = r;
@@ -174,24 +174,24 @@ describe('Continuity Storage', () => {
     describe.skip('aggregateHistory', () => {
       it('produces a result', async () => {
         const {getHead} = _getEventMethods();
-        const [creatorId] = testCreatorIds;
-        const head = await getHead({creatorId});
+        const [peerId] = testCreatorIds;
+        const head = await getHead({peerId});
         const [{meta: {eventHash: startHash}}] = head;
         const startParentHash = [startHash];
         const {aggregateHistory} = _getEventMethods();
-        const creatorRestriction = [{creator: creatorId, generation: 0}];
+        const creatorRestriction = [{creator: peerId, generation: 0}];
         const r = await aggregateHistory(
           {creatorRestriction, startHash, startParentHash});
         r.should.have.length(4);
       });
       it('is properly indexed', async () => {
         const {getHead} = _getEventMethods();
-        const [creatorId] = testCreatorIds;
-        const head = await getHead({creatorId});
+        const [peerId] = testCreatorIds;
+        const head = await getHead({peerId});
         const [{meta: {eventHash: startHash}}] = head;
         const startParentHash = [startHash];
         const {aggregateHistory} = _getEventMethods();
-        const creatorRestriction = [{creator: creatorId, generation: 0}];
+        const creatorRestriction = [{creator: peerId, generation: 0}];
         const r = await aggregateHistory(
           {creatorRestriction, explain: true, startHash, startParentHash});
         should.exist(r);
@@ -230,9 +230,9 @@ describe('Continuity Storage', () => {
         const r = await getMergeEventPeers({blockHeight});
         r.should.be.an('array');
         r.should.have.length(1);
-        const [creatorId] = r;
-        // the only creatorId in the network
-        creatorId.should.equal(testCreatorIds[0]);
+        const [peerId] = r;
+        // the only peerId in the network
+        peerId.should.equal(testCreatorIds[0]);
       });
       it('is properly indexed', async () => {
         const {getMergeEventPeers} = _getEventMethods();
@@ -251,17 +251,17 @@ describe('Continuity Storage', () => {
     describe.skip('getStartHash', () => {
       it('produces a result', async () => {
         const {getStartHash} = _getEventMethods();
-        const [creatorId] = testCreatorIds;
+        const [peerId] = testCreatorIds;
         const targetGeneration = 1;
-        const r = await getStartHash({creatorId, targetGeneration});
+        const r = await getStartHash({peerId, targetGeneration});
         r.should.be.a.string;
       });
       it('is properly indexed', async () => {
         const {getStartHash} = _getEventMethods();
-        const [creatorId] = testCreatorIds;
+        const [peerId] = testCreatorIds;
         const targetGeneration = 1;
         const r = await getStartHash(
-          {creatorId, explain: true, targetGeneration});
+          {peerId, explain: true, targetGeneration});
         const {executionStats: s} = r;
         const {indexName} = r.queryPlanner.winningPlan.inputStage.inputStage;
         indexName.should.equal('event.continuity2017.type.1');

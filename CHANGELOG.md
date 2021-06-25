@@ -1,5 +1,12 @@
 # bedrock-ledger-consensus-continuity-storage ChangeLog
 
+## 5.0.0 - TBD
+
+### Changed
+- **BREAKING**: `events.getHead` takes `peerId` instead of `creatorId`.
+- **BREAKING**: `events.getAvgConsensusTime` takes `peerId` instead of `creatorId`.
+- **BREAKING**: `events.getStartHash` takes `peerId` instead of `creatorId`.
+
 ## 4.0.0 - 2021-04-29
 
 ### Changed

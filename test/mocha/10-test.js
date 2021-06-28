@@ -11,7 +11,7 @@ const peers = [];
 let ledgerNode;
 const blockMethods = ['getConsensusProofPeers'];
 const eventMethods = [
-  'aggregateHistory', 'hasOutstandingParentHashCommitments',
+  'hasOutstandingParentHashCommitments',
   'hasOutstandingRegularEvents',
   'getAvgConsensusTime', 'getHead', 'getMergeEventHashes',
   'getMergeEventPeers', 'setEffectiveConfiguration', '_stat'
@@ -169,36 +169,6 @@ describe('Continuity Storage', () => {
         s.totalDocsExamined.should.equal(0);
       });
     }); // end getHeads
-
-    // FIXME: skipped due to pending removal of this method
-    describe.skip('aggregateHistory', () => {
-      it('produces a result', async () => {
-        const {getHead} = _getEventMethods();
-        const [peerId] = testCreatorIds;
-        const head = await getHead({peerId});
-        const [{meta: {eventHash: startHash}}] = head;
-        const startParentHash = [startHash];
-        const {aggregateHistory} = _getEventMethods();
-        const creatorRestriction = [{creator: peerId, generation: 0}];
-        const r = await aggregateHistory(
-          {creatorRestriction, startHash, startParentHash});
-        r.should.have.length(4);
-      });
-      it('is properly indexed', async () => {
-        const {getHead} = _getEventMethods();
-        const [peerId] = testCreatorIds;
-        const head = await getHead({peerId});
-        const [{meta: {eventHash: startHash}}] = head;
-        const startParentHash = [startHash];
-        const {aggregateHistory} = _getEventMethods();
-        const creatorRestriction = [{creator: peerId, generation: 0}];
-        const r = await aggregateHistory(
-          {creatorRestriction, explain: true, startHash, startParentHash});
-        should.exist(r);
-        // TOOD: make assertions about report, however details are scant for
-        // $graphLookup
-      });
-    }); // end aggregateHistory
 
     describe('getMergeEventHashes', () => {
       it('produces a result', async () => {

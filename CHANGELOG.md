@@ -8,6 +8,7 @@
 
 ### Removed
 - **BREAKING**: `events.getStartHash` has been removed.
+- **BREAKING**: `events.aggregateHistory` has been removed.
 
 ## 4.0.0 - 2021-04-29
 

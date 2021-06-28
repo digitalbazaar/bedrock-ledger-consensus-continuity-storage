@@ -5,7 +5,9 @@
 ### Changed
 - **BREAKING**: `events.getHead` takes `peerId` instead of `creatorId`.
 - **BREAKING**: `events.getAvgConsensusTime` takes `peerId` instead of `creatorId`.
-- **BREAKING**: `events.getStartHash` takes `peerId` instead of `creatorId`.
+
+### Removed
+- **BREAKING**: `events.getStartHash` has been removed.
 
 ## 4.0.0 - 2021-04-29
 

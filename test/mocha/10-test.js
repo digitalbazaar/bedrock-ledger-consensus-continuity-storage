@@ -14,7 +14,7 @@ const eventMethods = [
   'aggregateHistory', 'hasOutstandingParentHashCommitments',
   'hasOutstandingRegularEvents',
   'getAvgConsensusTime', 'getHead', 'getMergeEventHashes',
-  'getMergeEventPeers', 'getStartHash', 'setEffectiveConfiguration', '_stat'
+  'getMergeEventPeers', 'setEffectiveConfiguration', '_stat'
 ];
 const testEventHashes = [];
 const testCreatorIds = [];
@@ -246,30 +246,6 @@ describe('Continuity Storage', () => {
         s.totalDocsExamined.should.equal(0);
       });
     }); // end getMergeEventPeers
-
-    // FIXME: skipped due to pending removal of this method
-    describe.skip('getStartHash', () => {
-      it('produces a result', async () => {
-        const {getStartHash} = _getEventMethods();
-        const [peerId] = testCreatorIds;
-        const targetGeneration = 1;
-        const r = await getStartHash({peerId, targetGeneration});
-        r.should.be.a.string;
-      });
-      it('is properly indexed', async () => {
-        const {getStartHash} = _getEventMethods();
-        const [peerId] = testCreatorIds;
-        const targetGeneration = 1;
-        const r = await getStartHash(
-          {peerId, explain: true, targetGeneration});
-        const {executionStats: s} = r;
-        const {indexName} = r.queryPlanner.winningPlan.inputStage.inputStage;
-        indexName.should.equal('event.continuity2017.type.1');
-        s.nReturned.should.equal(1);
-        s.totalKeysExamined.should.equal(1);
-        s.totalDocsExamined.should.equal(0);
-      });
-    }); // end getStartHash
 
     describe('hasOutstandingRegularEvents', () => {
       it('produces a result', async () => {

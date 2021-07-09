@@ -14,7 +14,8 @@ const eventMethods = [
   'hasOutstandingParentHashCommitments',
   'hasOutstandingRegularEvents',
   'getAvgConsensusTime', 'getHead', 'getMergeEventHashes',
-  'getMergeEventPeers', 'setEffectiveConfiguration', '_stat'
+  'getMergeEventPeers', 'getMostRecentLocalEventNumber',
+  'setEffectiveConfiguration', '_stat'
 ];
 const testEventHashes = [];
 const testCreatorIds = [];
@@ -288,7 +289,8 @@ describe('Continuity Storage', () => {
         const r = await getConsensusProofPeers({blockHeight: 1, explain: true});
         const {indexName} = r.stages[0].$cursor.queryPlanner
           .winningPlan.inputStage;
-        indexName.should.equal('block.blockHeight.core.1');
+        ['block.continuity2017.blockHeight.1', 'block.blockHeight.core.1']
+          .should.include(indexName);
       });
     });
   }); // end block APIs

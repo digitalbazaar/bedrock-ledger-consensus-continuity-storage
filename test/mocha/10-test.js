@@ -276,29 +276,9 @@ describe('Continuity Storage', () => {
         pluginMethods.should.have.same.members(blockMethods);
       });
     });
-    describe('getConsensusProofPeers', () => {
-      it('produces a result', async () => {
-        const {getConsensusProofPeers} = _getBlockMethods();
-        const r = await getConsensusProofPeers({blockHeight: 1});
-        const [peer] = r;
-        // the only peer in this network
-        peer.should.equal(testCreatorIds[0]);
-      });
-      it('is indexed properly', async () => {
-        const {getConsensusProofPeers} = _getBlockMethods();
-        const r = await getConsensusProofPeers({blockHeight: 1, explain: true});
-        const {indexName} = r.stages[0].$cursor.queryPlanner
-          .winningPlan.inputStage;
-        ['block.continuity2017.blockHeight.1', 'block.blockHeight.core.1']
-          .should.include(indexName);
-      });
-    });
   }); // end block APIs
 });
 
-function _getBlockMethods() {
-  return ledgerNode.storage.blocks.plugins['continuity-storage'];
-}
 function _getEventMethods() {
   return ledgerNode.storage.events.plugins['continuity-storage'];
 }

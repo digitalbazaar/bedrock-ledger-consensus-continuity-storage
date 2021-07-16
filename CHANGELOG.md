@@ -1,14 +1,14 @@
 # bedrock-ledger-consensus-continuity-storage ChangeLog
 
-## 5.0.0 - 2021-07-xx
-
-### Added
-- Add getMostRecentLocalEventNumber() and supporting index.
+## 5.0.0 - 2021-07-16
 
 ### Changed
 - **BREAKING**: `events.getHead` takes `peerId` instead of `creatorId`.
 - **BREAKING**: `events.getAvgConsensusTime` takes `peerId` instead of
   `creatorId`.
+
+### Added
+  - Add getMostRecentLocalEventNumber() and supporting index.
 
 ### Removed
 - **BREAKING**: `events.getStartHash` has been removed.

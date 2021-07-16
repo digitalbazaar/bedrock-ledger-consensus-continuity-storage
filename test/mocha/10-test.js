@@ -11,11 +11,13 @@ const peers = [];
 let ledgerNode;
 const blockMethods = [
   'getWitnessConversions',
+  'hasBeenWitness',
   'haveBeenWitnesses',
 ];
 const eventMethods = [
   'findNewReplayers',
   'getAvgConsensusTime',
+  'getCommitmentToPeer',
   //'getConfigReplayers',
   'getForkers',
   'getHead',
@@ -31,6 +33,7 @@ const eventMethods = [
   'hasOutstandingRegularEvents',
   'getParentHashCommitments',
   'markNewReplayers',
+  'peerHasCommitmentOrHead',
   'setEffectiveConfiguration',
   'setRequiredBlockHeight',
   '_stat',

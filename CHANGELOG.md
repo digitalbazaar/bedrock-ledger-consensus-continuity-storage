@@ -4,6 +4,7 @@
 
 ### Removed
 - **BREAKING**: Remove unused `localAncestorGeneration` from events.
+- **BREAKING**: Remove unused `getConsensusProofPeers`.
 
 ## 5.0.0 - 2021-07-16
 

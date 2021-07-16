@@ -9,7 +9,7 @@ const mockData = require('./mock.data');
 
 const peers = [];
 let ledgerNode;
-const blockMethods = ['getConsensusProofPeers'];
+const blockMethods = [];
 const eventMethods = [
   'hasOutstandingParentHashCommitments',
   'hasOutstandingRegularEvents',
@@ -46,8 +46,7 @@ describe('Continuity Storage', () => {
     this.timeout(60000);
     const opTemplate = mockData.operations.alpha;
     await helpers.addOperation({ledgerNode: genesisLedgerNode, opTemplate});
-    await helpers.settleNetwork(
-      {consensusApi, nodes: peers, series: false});
+    await helpers.settleNetwork({consensusApi, nodes: peers, series: false});
     const blockHashes = [];
     for(const ledgerNode of peers) {
       const result = await ledgerNode.storage.blocks.getLatest();

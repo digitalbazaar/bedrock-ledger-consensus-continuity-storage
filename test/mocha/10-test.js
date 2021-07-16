@@ -9,13 +9,19 @@ const mockData = require('./mock.data');
 
 const peers = [];
 let ledgerNode;
-const blockMethods = [];
+const blockMethods = [
+  'getWitnessConversions',
+  'haveBeenWitnesses',
+];
 const eventMethods = [
   'findNewReplayers',
   'getAvgConsensusTime',
+  //'getConfigReplayers',
+  'getForkers',
   'getHead',
   'getKnownPeerHeads',
   'getLatestParentHashCommitment',
+  'getLatestReplays',
   'getMergeEventHashes',
   'getMergeEventPeers',
   'getMostRecentLocalEventNumber',
@@ -23,10 +29,14 @@ const eventMethods = [
   'getSortedEventSummaries',
   'hasOutstandingParentHashCommitments',
   'hasOutstandingRegularEvents',
+  'getParentHashCommitments',
   'markNewReplayers',
   'setEffectiveConfiguration',
   'setRequiredBlockHeight',
-  '_stat'
+  '_stat',
+];
+const operationMethods = [
+  'getOperationReplayers',
 ];
 const testEventHashes = [];
 const testCreatorIds = [];
@@ -287,6 +297,18 @@ describe('Continuity Storage', () => {
       });
     });
   }); // end block APIs
+
+  describe('Operation APIs', () => {
+    describe('check plugin methods', () => {
+      it('all the plugin methods are properly bound', () => {
+        should.exist(ledgerNode.storage.operations
+          .plugins['continuity-storage']);
+        const pluginMethods = Object.keys(
+          ledgerNode.storage.operations.plugins['continuity-storage']);
+        pluginMethods.should.have.same.members(operationMethods);
+      });
+    });
+  }); // end operation APIs
 });
 
 function _getEventMethods() {

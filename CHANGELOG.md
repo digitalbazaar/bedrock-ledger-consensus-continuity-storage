@@ -1,5 +1,10 @@
 # bedrock-ledger-consensus-continuity-storage ChangeLog
 
+## 6.0.0 - 2021-07-xx
+
+### Removed
+- **BREAKING**: Remove unused `localAncestorGeneration` from events.
+
 ## 5.0.0 - 2021-07-16
 
 ### Changed

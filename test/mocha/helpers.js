@@ -20,7 +20,9 @@ api.addOperation = async ({count = 1, ledgerNode, opTemplate}) => {
     operation.record.id = `https://example.com/event/${uuid()}`;
     // this creator is just an arbitrary field in the record
     operation.record.creator = uuid();
-    const result = await ledgerNode.operations.add({operation});
+    const result = await ledgerNode.operations.add({
+      operation, options: {forceFlush: true}
+    });
     operations[result.meta.operationHash] = operation;
   }
   return operations;

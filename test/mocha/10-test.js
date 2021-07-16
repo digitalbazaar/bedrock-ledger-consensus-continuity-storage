@@ -11,11 +11,22 @@ const peers = [];
 let ledgerNode;
 const blockMethods = [];
 const eventMethods = [
+  'findNewReplayers',
+  'getAvgConsensusTime',
+  'getHead',
+  'getKnownPeerHeads',
+  'getLatestParentHashCommitment',
+  'getMergeEventHashes',
+  'getMergeEventPeers',
+  'getMostRecentLocalEventNumber',
+  'getNonConsensusEvents',
+  'getSortedEventSummaries',
   'hasOutstandingParentHashCommitments',
   'hasOutstandingRegularEvents',
-  'getAvgConsensusTime', 'getHead', 'getMergeEventHashes',
-  'getMergeEventPeers', 'getMostRecentLocalEventNumber',
-  'setEffectiveConfiguration', '_stat'
+  'markNewReplayers',
+  'setEffectiveConfiguration',
+  'setRequiredBlockHeight',
+  '_stat'
 ];
 const testEventHashes = [];
 const testCreatorIds = [];
